@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,9 +9,17 @@ namespace MultiQueueModels
 {
     public static class Logic
     {
-        public static void ReadFromFile()
+        public static void ReadFromFile(string fileName)
         {
-            //To Do: read the data from a file
+            string fileContent;
+            using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader reader = new StreamReader(fileStream))
+                {
+                    fileContent = reader.ReadToEnd();
+                }
+            }
+            //To Do: use the data read from a file
         }
 
         public static void CalculateCommulativeAndRange(List<TimeDistribution> timeDistributionList)
