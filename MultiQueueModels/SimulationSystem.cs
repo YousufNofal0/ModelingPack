@@ -28,14 +28,6 @@ namespace MultiQueueModels
         public List<SimulationCase> SimulationTable { get; set; }
         public PerformanceMeasures PerformanceMeasures { get; set; }
         
-        ///////////// Methods ///////////// 
-        public void Run()
-        {
-            foreach (Server server in Servers)
-                Logic.CalculateCommulativeAndRange(server.TimeDistribution);
-
-            Logic.CalculateCommulativeAndRange(InterarrivalDistribution);
-        }
 
     }
 }

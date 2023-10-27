@@ -16,13 +16,19 @@ namespace MultiQueueSimulation
         [STAThread]
         static void Main()
         {
-            SimulationSystem system = new SimulationSystem();
-            string result = TestingManager.Test(system, Constants.FileNames.TestCase1);
-            MessageBox.Show(result);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-           
+            InputForm formInput = new InputForm();
+            Application.Run(formInput);
+            SimulationFlow simulationFlow = new SimulationFlow();
+            if (String.IsNullOrEmpty(formInput.FileName))
+                simulationFlow.ParseInputs(formInput.NumberOfServers, formInput.StoppingNumber, formInput.StoppingCriteria,
+                    formInput.SelectionMethod, formInput.SystemData, formInput.ServerData);
+            else
+                simulationFlow.ParseInputs(formInput.FileName);
+            //SimulationSystem system = new SimulationSystem();
+            //string result = TestingManager.Test(system, Constants.FileNames.TestCase1);
+            //MessageBox.Show(result);
         }
     }
 }
