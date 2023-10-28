@@ -9,19 +9,71 @@ namespace MultiQueueModels
 {
     public static class Logic
     {
-        public static void ReadFromFile(string fileName, out int numberOfServers, out Enums.SelectionMethod selectionMethod, out Enums.StoppingCriteria stoppingCriteria, out int stoppingNumber, out string systemData, List<string> serverData)
+        public static void ReadFromFile(string fileName, out int numberOfServers, out Enums.SelectionMethod selectionMethod,
+            out Enums.StoppingCriteria stoppingCriteria, out int stoppingNumber, out string systemData, List<string> serverData)
         {
-            string fileContent;
+            numberOfServers = 0; selectionMethod = Enums.SelectionMethod.Random; stoppingCriteria = Enums.StoppingCriteria.NumberOfCustomers;
+            stoppingNumber = 0; systemData = "";
+            //To Do: use the data read from a file to fill in the out parameters.
+            //You can look at the file content in the TestCase1.txt
+            string line;
             using (FileStream fileStream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
                 using (StreamReader reader = new StreamReader(fileStream))
                 {
-                    fileContent = reader.ReadToEnd();
+                    while ((line = reader.ReadLine()) != null)
+                    {
+
+                        if (line.Equals("NumberOfServers"))
+                        {
+                            line = reader.ReadLine();
+                            int.TryParse(line, out numberOfServers);
+                        }
+
+                        if (line.Equals("StoppingNumber"))
+                        {
+                            line = reader.ReadLine();
+                            int.TryParse(line, out stoppingNumber);
+                        }
+
+
+                        if (line.Equals("StoppingCriteria"))
+                        {
+                            line = reader.ReadLine();
+
+                            int.TryParse(line, out int stc);
+                            stoppingCriteria = (Enums.StoppingCriteria)stc;
+                        }
+
+                        if (line.Equals("SelectionMethod"))
+                        {
+                            line = reader.ReadLine();
+
+                            int.TryParse(line, out int sem);
+                            selectionMethod = (Enums.SelectionMethod)sem;
+                        }
+
+                        if (line.Equals("InterarrivalDistribution"))
+                        {
+                            while (!string.IsNullOrEmpty(line = reader.ReadLine()))
+                            {
+                                systemData += line + "\n";
+                            }
+                        }
+
+                        if (line.StartsWith("ServiceDistribution_Server"))
+                        {
+                            string _serverData = "";
+                            while (!string.IsNullOrEmpty(line = reader.ReadLine()))
+                            {
+                                _serverData += line + "\n";
+                            }
+                            serverData.Add(_serverData);
+                        }
+                    }
                 }
             }
-            throw new NotImplementedException();
-            //To Do: use the data read from a file to fill in the out parameters.
-            //You can look at the file content in the TestCase1.txt
+            //Done: Yousuf
         }
 
         public static void CalculateComulativeAndRange(List<TimeDistribution> timeDistributionList)
@@ -42,11 +94,29 @@ namespace MultiQueueModels
         public static void ParseDistributionData(string data, List<TimeDistribution> interarrivalTimeDistributions)
         {
             //To Do: Parse the data for a given time distribution
+            using (StringReader reader = new StringReader(data))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] parts = line.Split(',');
+                    int.TryParse(parts[0], out int time);
+                    decimal.TryParse(parts[1], out decimal probability);
+                    interarrivalTimeDistributions.Add(new TimeDistribution(time, probability));
+                }
+            }
+            //Done: Nofal
         }
 
         public static void ParseServerDistributionData(List<string> distributionData, List<Server> servers)
         {
             //To Do: Parse the data for each server
+            for(int i = 0; i < distributionData.Count; ++i)
+            {
+                ParseDistributionData(distributionData[i], servers[i].TimeDistribution);
+
+            }
+            //Done: Nofal
         }
     }
 }

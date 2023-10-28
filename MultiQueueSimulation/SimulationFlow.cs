@@ -17,7 +17,12 @@ namespace MultiQueueSimulation
 
         public void ParseInputs(string fileName) {
             List<string> serverData = new List<string>();
-            Logic.ReadFromFile(fileName, out int numberOfServers, out Enums.SelectionMethod selectionMethod, out Enums.StoppingCriteria stoppingCriteria, out int stoppingNumber, out string systemData, serverData);
+            Logic.ReadFromFile(fileName, out int numberOfServers, out Enums.SelectionMethod selectionMethod,
+                out Enums.StoppingCriteria stoppingCriteria, out int stoppingNumber, out string systemData, serverData);
+
+            for (int i = 0; i < numberOfServers; ++i)
+                system.Servers.Add(new Server(i+1));
+
             system.NumberOfServers = numberOfServers;
             system.SelectionMethod = selectionMethod;
             system.StoppingCriteria = stoppingCriteria;
@@ -26,8 +31,12 @@ namespace MultiQueueSimulation
             Logic.ParseServerDistributionData(serverData, system.Servers);
         }
 
-        public void ParseInputs(int numberOfServers, int stoppingNumber, Enums.StoppingCriteria stoppingCriteria, Enums.SelectionMethod selectionMethod, string systemData, List<string> serverData)
-        {
+        public void ParseInputs(int numberOfServers, int stoppingNumber, Enums.StoppingCriteria stoppingCriteria,
+            Enums.SelectionMethod selectionMethod, string systemData, List<string> serverData)
+        { 
+            for (int i = 0; i < numberOfServers; ++i)
+                system.Servers.Add(new Server(i + 1));
+
             system.NumberOfServers = numberOfServers;
             system.SelectionMethod = selectionMethod;
             system.StoppingCriteria = stoppingCriteria;
