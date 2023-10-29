@@ -53,7 +53,7 @@ namespace MultiQueueSimulation
                 Logic.CalculateCumulativeAndRange(server.TimeDistribution);
 
             if (system.StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
-            {
+            {                
                 Random rnd = new Random();
                 for (int i = 0; i < system.StoppingNumber; ++i)
                 {
@@ -63,7 +63,13 @@ namespace MultiQueueSimulation
                         system.SimulationTable[i].ArrivalTime = system.SimulationTable[i-1].ArrivalTime + system.SimulationTable[i].InterArrival;
                     }
                 }
-                
+
+
+
+
+                //for (int i = 0; i < system.StoppingNumber; ++i) {
+                //    system.SimulationTable[i].ServiceTime = Logic.CalculateTime(system.SimulationTable[i].AssignedServer.TimeDistribution, system.SimulationTable[i].RandomService);
+                //}
                 
             }
 

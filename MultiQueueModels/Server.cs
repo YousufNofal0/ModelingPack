@@ -16,6 +16,7 @@ namespace MultiQueueModels
         public Server(int id)
         {
             ID = id;
+            TimeDistribution = new List<TimeDistribution>();
         }
 
         public int ID { get; set; }

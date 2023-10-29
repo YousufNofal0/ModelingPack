@@ -96,6 +96,20 @@ namespace MultiQueueModels
         public static void CalculateSystemPerformanceMeasures(SimulationSystem system)
         {
             //To Do: Calculate the performance measures for the system 
+            int TotalWaitingTime = 0;
+            int WaitedCustomersCount = 0;
+            for (int i = 0; i < system.SimulationTable.Count; i++)
+            {
+                system.SimulationTable[i].TimeInQueue = system.SimulationTable[i].StartTime - system.SimulationTable[i].ArrivalTime;
+                TotalWaitingTime += system.SimulationTable[i].TimeInQueue;
+                if (system.SimulationTable[i].TimeInQueue != 0)
+                {
+                    WaitedCustomersCount++;
+                }
+            }
+            system.PerformanceMeasures.AverageWaitingTime = TotalWaitingTime / system.SimulationTable.Count;
+            system.PerformanceMeasures.WaitingProbability = WaitedCustomersCount / system.SimulationTable.Count;
+            //Done: Renad
         }
 
         public static int CalculateTime(List<TimeDistribution> timeDistribution, int randomNumber)
