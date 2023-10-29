@@ -7,6 +7,15 @@
             this.AssignedServer = new Server();
         }
 
+        public SimulationCase(int customerNumber, int randomInterArrival, int randomService)
+        {
+            CustomerNumber = customerNumber;
+            RandomInterArrival = randomInterArrival;
+            RandomService = randomService;
+            InterArrival = 0;
+            ArrivalTime = 0;
+        }
+
         public int CustomerNumber { get; set; }
         public int RandomInterArrival { get; set; }
         public int InterArrival { get; set; }

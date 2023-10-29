@@ -12,6 +12,9 @@ namespace MultiQueueModels
         {
             Time = time;
             Probability = probability;
+            CummProbability = probability;
+            MinRange = 1;
+            MaxRange = (int)(probability * 100);
         }
         public int Time { get; set; }
         public decimal Probability { get; set; }

@@ -41,16 +41,16 @@ namespace MultiQueueModels
                         {
                             line = reader.ReadLine();
 
-                            int.TryParse(line, out int stc);
-                            stoppingCriteria = (Enums.StoppingCriteria)stc;
+                            bool x = int.TryParse(line, out int stc);
+                            stoppingCriteria = x ? (Enums.StoppingCriteria)stc : (Enums.StoppingCriteria)Enum.Parse(typeof(Enums.StoppingCriteria), line);
                         }
 
                         if (line.Equals("SelectionMethod"))
                         {
                             line = reader.ReadLine();
 
-                            int.TryParse(line, out int sem);
-                            selectionMethod = (Enums.SelectionMethod)sem;
+                            bool x = int.TryParse(line, out int sem);
+                            selectionMethod = x ? (Enums.SelectionMethod)sem : (Enums.SelectionMethod)Enum.Parse(typeof(Enums.SelectionMethod), line);
                         }
 
                         if (line.Equals("InterarrivalDistribution"))
@@ -76,21 +76,16 @@ namespace MultiQueueModels
             //Done: Yousuf
         }
 
-        public static void CalculateComulativeAndRange(List<TimeDistribution> timeDistributionList)
+        public static void CalculateCumulativeAndRange(List<TimeDistribution> timeDistributionList)
         {
-            //To Do: calculate the commulative probability and range for a give time distribution
-            if (timeDistributionList[0].CummProbability == timeDistributionList[0].Probability)
-            {
-                timeDistributionList[0].MinRange = 1;
-                timeDistributionList[0].MaxRange = (int)(timeDistributionList[0].CummProbability) * 100;
-
-            }
-            for (int i = 1; i <= timeDistributionList.Count; i++)
+            //To Do: calculate the cumulative probability and range for a give time distribution
+            for (int i = 1; i < timeDistributionList.Count; i++)
             {
                 timeDistributionList[i].CummProbability = timeDistributionList[i - 1].CummProbability + timeDistributionList[i].Probability;
                 timeDistributionList[i].MinRange = (timeDistributionList[i - 1].MaxRange + 1);
-                timeDistributionList[i].MaxRange = (int)(timeDistributionList[i].CummProbability) * 100;
+                timeDistributionList[i].MaxRange = (int)(timeDistributionList[i].CummProbability * 100);
             }
+            //Done: Renad
         }
 
         public static void CalculateServerPerformanceMeasures(Server server)
@@ -113,6 +108,15 @@ namespace MultiQueueModels
             }
             system.PerformanceMeasures.AverageWaitingTime =TotalWaitingTime/system.SimulationTable.Count;
             system.PerformanceMeasures.WaitingProbability = WaitedCustomersCount / system.SimulationTable.Count;
+        }
+
+        public static int CalculateTime(List<TimeDistribution> timeDistribution, int randomNumber)
+        {
+            foreach (var item in timeDistribution)
+                if (randomNumber >= item.MinRange && randomNumber >= item.MaxRange)
+                    return item.Time;
+            return 0;
+            //Done: Nofal
         }
 
         public static void ParseDistributionData(string data, List<TimeDistribution> interarrivalTimeDistributions)
