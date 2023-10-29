@@ -47,11 +47,25 @@ namespace MultiQueueSimulation
 
         public void Run()
         {
+            Logic.CalculateCumulativeAndRange(system.InterarrivalDistribution);
 
             foreach (Server server in system.Servers)
-                Logic.CalculateComulativeAndRange(server.TimeDistribution);
+                Logic.CalculateCumulativeAndRange(server.TimeDistribution);
 
-            Logic.CalculateComulativeAndRange(system.InterarrivalDistribution);
+            if (system.StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
+            {
+                Random rnd = new Random();
+                for (int i = 0; i < system.StoppingNumber; ++i)
+                {
+                    system.SimulationTable.Add(new SimulationCase(i+1, rnd.Next() % 100, rnd.Next() % 100));
+                    if (i != 0) {
+                        system.SimulationTable[i].InterArrival = Logic.CalculateTime(system.InterarrivalDistribution, system.SimulationTable[i].RandomInterArrival);
+                        system.SimulationTable[i].ArrivalTime = system.SimulationTable[i-1].ArrivalTime + system.SimulationTable[i].InterArrival;
+                    }
+                }
+                
+                
+            }
 
             Logic.CalculateSystemPerformanceMeasures(system);
         }

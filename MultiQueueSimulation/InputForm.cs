@@ -38,18 +38,11 @@ namespace MultiQueueSimulation
                     if (int.TryParse(numberOfServers.Text, out int _numberOfServers))
                     {
                         NumberOfServers = _numberOfServers;
-                        if (selectionMethod.SelectedItem.ToString() == "Random")
-                            SelectionMethod = Enums.SelectionMethod.Random;
-                        else if (selectionMethod.SelectedItem.ToString() == "Least Utilization")
-                            SelectionMethod = Enums.SelectionMethod.LeastUtilization;
-                        else
-                            SelectionMethod = Enums.SelectionMethod.HighestPriority;
 
-                        if (stoppingCriteria.SelectedItem.ToString() == "Simulation End Time")
-                            StoppingCriteria = Enums.StoppingCriteria.SimulationEndTime;
-                        else
-                            StoppingCriteria = Enums.StoppingCriteria.NumberOfCustomers;
+                        SelectionMethod = (Enums.SelectionMethod)Enum.Parse(typeof(Enums.SelectionMethod), selectionMethod.SelectedItem.ToString());
 
+                        StoppingCriteria = (Enums.StoppingCriteria)Enum.Parse(typeof(Enums.StoppingCriteria), stoppingCriteria.SelectedItem.ToString());
+                    
                         ServerData = new List<string>(_numberOfServers);
                         // Create a new form
                         Form serverDataForm = new Form();

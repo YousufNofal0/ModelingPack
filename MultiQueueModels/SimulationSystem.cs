@@ -27,7 +27,9 @@ namespace MultiQueueModels
         ///////////// OUTPUTS /////////////
         public List<SimulationCase> SimulationTable { get; set; }
         public PerformanceMeasures PerformanceMeasures { get; set; }
-        
 
+        ///////////// EXTRAS /////////////
+        public List<int> PriorityByID { set; get;}
+        public int MaxQueueLength { get; set; }
     }
 }
