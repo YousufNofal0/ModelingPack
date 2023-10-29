@@ -89,7 +89,7 @@ namespace MultiQueueModels
         }
 
         public static void CalculateServerPerformanceMeasures(Server server)
-        {
+        { 
             //To Do: Calculate the performance measures for a given server 
         }
 
@@ -98,11 +98,11 @@ namespace MultiQueueModels
             //To Do: Calculate the performance measures for the system 
             int TotalWaitingTime = 0;
             int WaitedCustomersCount = 0;
-            for (int i = 0; i < system.SimulationTable.Count; i++)
+            for (int i=0;i<system.SimulationTable.Count;i++)
             {
                 system.SimulationTable[i].TimeInQueue = system.SimulationTable[i].StartTime - system.SimulationTable[i].ArrivalTime;
                 TotalWaitingTime += system.SimulationTable[i].TimeInQueue;
-                if (system.SimulationTable[i].TimeInQueue != 0)
+                if(system.SimulationTable[i].TimeInQueue!=0)
                 {
                     WaitedCustomersCount++;
                 }
