@@ -81,16 +81,33 @@ namespace MultiQueueModels
             //To Do: calculate the cumulative probability and range for a give time distribution
             for (int i = 1; i < timeDistributionList.Count; i++)
             {
+
                 timeDistributionList[i].CummProbability = timeDistributionList[i - 1].CummProbability + timeDistributionList[i].Probability;
+
                 timeDistributionList[i].MinRange = (timeDistributionList[i - 1].MaxRange + 1);
+
                 timeDistributionList[i].MaxRange = (int)(timeDistributionList[i].CummProbability * 100);
+
             }
             //Done: Renad
         }
 
-        public static void CalculateServerPerformanceMeasures(Server server)
-        { 
-            //To Do: Calculate the performance measures for a given server 
+        public static void CalculateServerPerformanceMeasures(Server server, int totalNoCustomers, int totalRunTime)
+        {
+
+            int idleTime = server.FinishTime - server.TotalWorkingTime;
+
+
+            server.IdleProbability = idleTime / server.FinishTime;
+
+
+            server.AverageServiceTime = server.TotalWorkingTime /totalNoCustomers;
+
+
+            server.Utilization = server.TotalWorkingTime / totalRunTime;
+
+            //Done: Renad & Maria
+
         }
 
         public static void CalculateSystemPerformanceMeasures(SimulationSystem system)
@@ -144,7 +161,6 @@ namespace MultiQueueModels
             for(int i = 0; i < distributionData.Count; ++i)
             {
                 ParseDistributionData(distributionData[i], servers[i].TimeDistribution);
-
             }
             //Done: Nofal
         }
