@@ -95,7 +95,8 @@ namespace MultiQueueModels
                 server.AverageServiceTime = (decimal)server.TotalWorkingTime / (decimal) server.TotalNumberOfCustomers;
             server.Utilization = (decimal)server.TotalWorkingTime / (decimal)totalRunTime;
             server.IdleProbability = 1 - server.Utilization;
-            //Done: Nofal
+            //Modified and Reviewed: Nofal
+            //Done: Renad and Maria
         }
 
         public static void CalculatePerformanceMeasures(SimulationSystem system)
