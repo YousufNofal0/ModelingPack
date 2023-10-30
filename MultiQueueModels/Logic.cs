@@ -88,34 +88,55 @@ namespace MultiQueueModels
             //Done: Renad
         }
 
-        public static void CalculateServerPerformanceMeasures(Server server)
-        { 
+        public static void CalculateServerPerformanceMeasures(Server server, int totalRunTime)
+        {
             //To Do: Calculate the performance measures for a given server 
+            if(server.TotalNumberOfCustomers != 0)
+                server.AverageServiceTime = (decimal)server.TotalWorkingTime / (decimal) server.TotalNumberOfCustomers;
+            server.Utilization = (decimal)server.TotalWorkingTime / (decimal)totalRunTime;
+            server.IdleProbability = 1 - server.Utilization;
+            //Done: Nofal
         }
 
-        public static void CalculateSystemPerformanceMeasures(SimulationSystem system)
+        public static void CalculatePerformanceMeasures(SimulationSystem system)
         {
             //To Do: Calculate the performance measures for the system 
-            int TotalWaitingTime = 0;
-            int WaitedCustomersCount = 0;
-            for (int i=0;i<system.SimulationTable.Count;i++)
+            int totalWaitingTime = 0;
+            int waitedCustomersCount = 0;
+            int totalWorkingTime = 0;
+            List<SimulationCase> simQueue = new List<SimulationCase>();
+            system.PerformanceMeasures.MaxQueueLength = 0;
+            for (int i=0; i<system.SimulationTable.Count; i++)
             {
-                system.SimulationTable[i].TimeInQueue = system.SimulationTable[i].StartTime - system.SimulationTable[i].ArrivalTime;
-                TotalWaitingTime += system.SimulationTable[i].TimeInQueue;
+                totalWorkingTime = Math.Max(totalWorkingTime, system.SimulationTable[i].EndTime);
+                for (int j = 0; j < simQueue.Count; ++j) {
+                    if (simQueue[j].StartTime <= system.SimulationTable[i].ArrivalTime)
+                        simQueue.RemoveAt(j);
+                }
+                //system.SimulationTable[i].TimeInQueue = system.SimulationTable[i].StartTime - system.SimulationTable[i].ArrivalTime;
+                totalWaitingTime += system.SimulationTable[i].TimeInQueue;
                 if(system.SimulationTable[i].TimeInQueue!=0)
                 {
-                    WaitedCustomersCount++;
+                    simQueue.Add(system.SimulationTable[i]);
+                    waitedCustomersCount++;
                 }
+                system.PerformanceMeasures.MaxQueueLength = Math.Max(system.PerformanceMeasures.MaxQueueLength, simQueue.Count);
             }
-            system.PerformanceMeasures.AverageWaitingTime = TotalWaitingTime / system.SimulationTable.Count;
-            system.PerformanceMeasures.WaitingProbability = WaitedCustomersCount / system.SimulationTable.Count;
+            system.PerformanceMeasures.AverageWaitingTime = (decimal) totalWaitingTime / (decimal) system.SimulationTable.Count;
+            system.PerformanceMeasures.WaitingProbability = (decimal) waitedCustomersCount / (decimal) system.SimulationTable.Count;
+
+            for (int i = 0; i < system.Servers.Count; ++i)
+                CalculateServerPerformanceMeasures(system.Servers[i], totalWorkingTime);
+            
+            
             //Done: Renad
+            //Modified: Nofal
         }
 
         public static int CalculateTime(List<TimeDistribution> timeDistribution, int randomNumber)
         {
             foreach (var item in timeDistribution)
-                if (randomNumber >= item.MinRange && randomNumber >= item.MaxRange)
+                if (randomNumber >= item.MinRange && randomNumber <= item.MaxRange)
                     return item.Time;
             return 0;
             //Done: Nofal

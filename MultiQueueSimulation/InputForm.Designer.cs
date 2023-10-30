@@ -115,27 +115,18 @@
             // stoppingCriteria
             // 
             this.stoppingCriteria.FormattingEnabled = true;
-            this.stoppingCriteria.Items.AddRange(new object[] {
-            "Maximum Number of Customers",
-            "Simulation End Time"});
             this.stoppingCriteria.Location = new System.Drawing.Point(135, 118);
             this.stoppingCriteria.Name = "stoppingCriteria";
             this.stoppingCriteria.Size = new System.Drawing.Size(207, 21);
             this.stoppingCriteria.TabIndex = 8;
-            this.stoppingCriteria.Text = "Maximum Number of Customers";
             // 
             // selectionMethod
             // 
             this.selectionMethod.FormattingEnabled = true;
-            this.selectionMethod.Items.AddRange(new object[] {
-            "Priority",
-            "Random",
-            "Least Utilization"});
             this.selectionMethod.Location = new System.Drawing.Point(135, 164);
             this.selectionMethod.Name = "selectionMethod";
             this.selectionMethod.Size = new System.Drawing.Size(207, 21);
             this.selectionMethod.TabIndex = 9;
-            this.selectionMethod.Text = "Priority";
             // 
             // systemData
             // 

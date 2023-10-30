@@ -16,19 +16,61 @@ namespace MultiQueueSimulation
         [STAThread]
         static void Main()
         {
+            #region Testing
+            int i = 1;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            SimulationFlow simulationFlow = new SimulationFlow();
+            simulationFlow.ParseInputs(Constants.FileNames.TestCase1);
+            simulationFlow.Run();
+            string result = TestingManager.Test(simulationFlow.system, Constants.FileNames.TestCase1);
+            MessageBox.Show(result + "\nfor case: " + i++);
+            DataView view = new DataView(simulationFlow.system);
+            Application.Run(view);
+
+            simulationFlow = new SimulationFlow();
+            simulationFlow.ParseInputs(Constants.FileNames.TestCase2);
+            simulationFlow.Run();
+            result = TestingManager.Test(simulationFlow.system, Constants.FileNames.TestCase2);
+            MessageBox.Show(result + "\nfor case: " + i++);
+            view = new DataView(simulationFlow.system);
+            Application.Run(view);
+
+            simulationFlow = new SimulationFlow();
+            simulationFlow.ParseInputs(Constants.FileNames.TestCase3);
+            simulationFlow.Run();
+            result = TestingManager.Test(simulationFlow.system, Constants.FileNames.TestCase3);
+            MessageBox.Show(result + "\nfor case: " + i++);
+            view = new DataView(simulationFlow.system);
+            Application.Run(view);
+
+            simulationFlow = new SimulationFlow();
+            simulationFlow.ParseInputs(Constants.FileNames.TestCase4);
+            simulationFlow.Run();
+            result = TestingManager.Test(simulationFlow.system, Constants.FileNames.TestCase4);
+            MessageBox.Show(result + "\nfor case: " + i++);
+            view = new DataView(simulationFlow.system);
+            Application.Run(view);
+
+            simulationFlow = new SimulationFlow();
+            simulationFlow.ParseInputs(Constants.FileNames.TestCase5);
+            simulationFlow.Run();
+            result = TestingManager.Test(simulationFlow.system, Constants.FileNames.TestCase5);
+            MessageBox.Show(result + "\nfor case: " + i++);
+            view = new DataView(simulationFlow.system);
+            Application.Run(view);
+
+            simulationFlow = new SimulationFlow();
+            simulationFlow.ParseInputs(Constants.FileNames.TestCase6);
+            simulationFlow.Run();
+            result = TestingManager.Test(simulationFlow.system, Constants.FileNames.TestCase6);
+            MessageBox.Show(result + "\nfor case: " + i++);
+            view = new DataView(simulationFlow.system);
+            Application.Run(view);
+            #endregion
+
             InputForm formInput = new InputForm();
             Application.Run(formInput);
-            SimulationFlow simulationFlow = new SimulationFlow();
-            if (String.IsNullOrEmpty(formInput.FileName))
-                simulationFlow.ParseInputs(formInput.NumberOfServers, formInput.StoppingNumber, formInput.StoppingCriteria,
-                    formInput.SelectionMethod, formInput.SystemData, formInput.ServerData);
-            else
-                simulationFlow.ParseInputs(formInput.FileName);
-            //SimulationSystem system = new SimulationSystem();
-            //string result = TestingManager.Test(system, Constants.FileNames.TestCase1);
-            //MessageBox.Show(result);
         }
     }
 }

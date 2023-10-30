@@ -17,6 +17,15 @@ namespace MultiQueueModels
         {
             ID = id;
             TimeDistribution = new List<TimeDistribution>();
+            TotalWorkingTime = 0;
+            TotalNumberOfCustomers = 0;
+            Utilization = 0;
+        }
+
+        override
+        public string ToString()
+        {
+            return ID.ToString();
         }
 
         public int ID { get; set; }
@@ -29,5 +38,7 @@ namespace MultiQueueModels
         //optional if needed use them
         public int FinishTime { get; set; }
         public int TotalWorkingTime { get; set; }
+        public int NextIdle { get; set; }
+        public int TotalNumberOfCustomers { get; set; }
     }
 }

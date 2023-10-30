@@ -17,7 +17,25 @@ namespace MultiQueueSimulation
         public InputForm()
         {
             InitializeComponent();
+            stoppingCriteria.DataSource = new[] {
+                new { Text = "Maximum Number of Customers", Value = "NumberOfCustomers" },
+                new { Text = "Simulation End Time", Value = "SimulationEndTime" },
+            };
 
+            stoppingCriteria.DisplayMember = "Text";
+            stoppingCriteria.ValueMember = "Value";
+
+            selectionMethod.DataSource = new[] {
+                new { Text = "Priority", Value = "HighestPriority"  },
+                new { Text = "Random", Value = "Random"},
+                new { Text = "LeastUtilization", Value = "LeastUtilization"},
+            };
+
+            selectionMethod.DisplayMember = "Text";
+            selectionMethod.ValueMember = "Value";
+
+            stoppingCriteria.Text = "Maximum Number of Customers";
+            selectionMethod.Text = "Priority";
         }
 
         public string FileName { set; get; }
@@ -38,10 +56,9 @@ namespace MultiQueueSimulation
                     if (int.TryParse(numberOfServers.Text, out int _numberOfServers))
                     {
                         NumberOfServers = _numberOfServers;
+                        StoppingCriteria = (Enums.StoppingCriteria)Enum.Parse(typeof(Enums.StoppingCriteria), stoppingCriteria.SelectedValue.ToString());
 
-                        SelectionMethod = (Enums.SelectionMethod)Enum.Parse(typeof(Enums.SelectionMethod), selectionMethod.SelectedItem.ToString());
-
-                        StoppingCriteria = (Enums.StoppingCriteria)Enum.Parse(typeof(Enums.StoppingCriteria), stoppingCriteria.SelectedItem.ToString());
+                        SelectionMethod = (Enums.SelectionMethod)Enum.Parse(typeof(Enums.SelectionMethod), selectionMethod.SelectedValue.ToString());
                     
                         ServerData = new List<string>(_numberOfServers);
                         // Create a new form
@@ -60,7 +77,7 @@ namespace MultiQueueSimulation
                             textBox.Text = "Probability Distribution for Server " + (i + 1);
                             textBox.Multiline = true;
                             textBox.ScrollBars = ScrollBars.Vertical;
-                            textBox.Text = "Textbox " + (i + 1);
+                            textBox.Text = "Server " + (i + 1);
                             textBox.Size = new System.Drawing.Size(200, textboxHeight);
                             textBox.Location = new System.Drawing.Point(10, yPos);
                             serverDataForm.Controls.Add(textBox);
@@ -74,15 +91,20 @@ namespace MultiQueueSimulation
 
                         btnSaveData.Click += (s, args) =>
                         {
-                            List<string> serverData = new List<string>();
                             foreach (var textbox in serverTextboxes)
                             {
-                                serverData.Add(textbox.Text);
+                                ServerData.Add(textbox.Text);
                             }
+                            //this.Hide();
+                            //serverDataForm.Hide();
+                            SimulationFlow simulationFlow = new SimulationFlow();
+                            simulationFlow.ParseInputs(NumberOfServers, StoppingNumber, StoppingCriteria,
+                                SelectionMethod, SystemData, ServerData);
 
 
-                            MessageBox.Show(string.Join(Environment.NewLine, serverData));
-                            this.Close();
+                            simulationFlow.Run();
+                            DataView view = new DataView(simulationFlow.system);
+                            view.ShowDialog();
                         };
                         // Show the new form
                         serverDataForm.ShowDialog();
@@ -106,12 +128,14 @@ namespace MultiQueueSimulation
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
                     MessageBox.Show("Done!");
                     FileName = openFileDialog.FileName;
-                    this.Close();
-                }
+                    SimulationFlow simulationFlow = new SimulationFlow();
+                    simulationFlow.ParseInputs(FileName);
+
+                    simulationFlow.Run();
+                    DataView view = new DataView(simulationFlow.system);
+                    view.ShowDialog();
             }
         }
     }

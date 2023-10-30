@@ -14,6 +14,7 @@
             RandomService = randomService;
             InterArrival = 0;
             ArrivalTime = 0;
+            StartTime = 0;
         }
 
         public int CustomerNumber { get; set; }
